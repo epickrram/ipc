@@ -1,0 +1,13 @@
+/bin
+/build
+/.gradle
+/out
+.DS_Store
+*~
+/out
+/.idea/workspace.xml
+/.idea/scopes
+/.idea/tasks.xml
+classes
+code
+pom.xml
