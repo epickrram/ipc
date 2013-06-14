@@ -5,13 +5,14 @@ import com.epickrram.ipc.ChannelSubscriberControl;
 
 public class InMemoryChannelPublisherControl implements ChannelPublisherControl, ChannelSubscriberControl
 {
-    private long nextWriteSequence = 0;
-    private long lowestReadSequence = 0;
+    private long nextWriteSequence = -1;
+    private long lowestReadSequence = -1;
+    private long highestPublishedSequence = -1;
 
     @Override
     public long getNextWriteSequence()
     {
-        return nextWriteSequence;
+        return ++nextWriteSequence;
     }
 
     @Override
@@ -23,11 +24,16 @@ public class InMemoryChannelPublisherControl implements ChannelPublisherControl,
     @Override
     public long getPublishedWriteSequence()
     {
-        return 0;
+        return highestPublishedSequence;
     }
 
     @Override
     public void updateLastReadSequence(final long sequence)
     {
+    }
+
+    void onPublish(final long sequence)
+    {
+        highestPublishedSequence = sequence;
     }
 }

@@ -33,6 +33,26 @@ public class InMemoryDataChannelTest
         final long publishedWriteSequence = dataChannel.subscriberControl().getPublishedWriteSequence();
 
         assertThat(publishedWriteSequence, is(nextWriteSequence));
+        assertThat(publishedWriteSequence, is(0L));
+
+        dataChannel.receive(publishedWriteSequence, wrap(receiverBuffer));
+
+        assertThat(receiverBuffer, is(sameByteSequence(DATA)));
+    }
+
+    @Test
+    public void shouldPublishMultipleMessages() throws Exception
+    {
+        long nextWriteSequence = dataChannel.publisherControl().getNextWriteSequence();
+        dataChannel.publish(nextWriteSequence, wrap(DATA));
+
+        nextWriteSequence = dataChannel.publisherControl().getNextWriteSequence();
+        dataChannel.publish(nextWriteSequence, wrap(DATA));
+
+        final long publishedWriteSequence = dataChannel.subscriberControl().getPublishedWriteSequence();
+
+        assertThat(publishedWriteSequence, is(nextWriteSequence));
+        assertThat(publishedWriteSequence, is(1L));
 
         dataChannel.receive(publishedWriteSequence, wrap(receiverBuffer));
 

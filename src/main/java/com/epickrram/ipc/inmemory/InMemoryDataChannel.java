@@ -24,6 +24,7 @@ public class InMemoryDataChannel implements WritableDataChannel, ReadableDataCha
     public void publish(final long sequence, final ByteBuffer data)
     {
         data.get(element(sequence));
+        channelControl.onPublish(sequence);
     }
 
     @Override
